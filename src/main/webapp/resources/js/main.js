@@ -24,14 +24,16 @@ function updateCounter(elm, limit, type){
 		$("#"+charCounterId).text("("+countLeft+" charecters remaining)");
 	}
 }
-function makeAjaxCall(type, url, data, successCallback){
+function makeAjaxCall(type, url, data, successCallback, errorCallback){
 	$.ajax({
 	  type: type,
 	  url: url,
 	  data: data,
-	  success: successCallback
+	  success: successCallback,
+	  error: errorCallback
 	});
 }
+
 var topicManager = {
 	createTopic: function(){
 		if(this.validateTopic()){
@@ -42,6 +44,9 @@ var topicManager = {
 				$topicDesc.val("");
 				$topicName.val("");
 				topicManager.retrieveTopics();
+			},
+			function(){
+				alert("An unexpected error has occured while creating the topic");
 			});
 		}
 	},
@@ -59,17 +64,28 @@ var topicManager = {
 				  }
 				  
 			  }
+		},
+		function(){
+			alert("An unexpected error has occured while retrieveing the topics");
 		});
 	},
 	upvoteTopic: function(topicId){
 		$("#rightContainer").html("Loading...");
 		makeAjaxCall("PUT","upvoteTopic/"+topicId,{}, function(){
 			topicManager.retrieveTopics();
+		},
+		function(){
+			alert("An unexpected error has occured while upvoting the topic");
+			topicManager.retrieveTopics();
 		});
 	},
 	downvoteTopic: function(topicId){
 		$("#rightContainer").html("Loading...");
 		makeAjaxCall("PUT","downvoteTopic/"+topicId,{}, function(){
+			topicManager.retrieveTopics();
+		},
+		function(){
+			alert("An unexpected error has occured while downvoting the topic");
 			topicManager.retrieveTopics();
 		});
 	},
