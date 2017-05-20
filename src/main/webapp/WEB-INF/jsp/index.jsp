@@ -9,20 +9,23 @@
 		<script src="<c:url value="/resources/js/jquery-3.2.1.min.js" />"></script>
 		<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 	</head>
-	<body>
+	<body onload="topicManager.displayTopics()">
 		<div id="container">
 			<div id="leftContainer">
 				<p id="title">Topiclish</p>
 				<div>
 					<h3>Create Topic</h3>
-  					<div class="form-group">
-  						<label for="topicName">Name</label>
-    					<input type="text" class="form-control" id="topicName" placeholder="Name">
-    					<br/>
-    					<label for="topicName">Text</label>
-    					<textarea class="form-control" id="topicDesc" placeholder="Text"></textarea>
+  					<div class="form-group" id="nameGroup">
+  						<p class="formLabel">Name <span id="nameCharCounter"></span></p> 
+  						<label class="control-label" for="topicName"><small id="nameError"></small></label>
+    					<input type="text" class="form-control" id="topicName" placeholder="Name" maxlength="50">
+    				</div>
+    				<div class="form-group" id="textGroup">
+    					<p class="formLabel">Text <span id="textCharCounter"></span></p> 
+    					<label class="control-label" for="topicName"><small id="textError"></small></label>
+    					<textarea class="form-control" id="topicDesc" placeholder="Text" rows="3" maxlength="255"></textarea>
     					 <br/>
-    					 <button type="submit" class="btn btn-primary">Create</button>	
+    					 <button type="submit" class="btn btn-primary" onclick="topicManager.createTopic()">Create</button>	
 					</div>
 				</div>
 			</div>
