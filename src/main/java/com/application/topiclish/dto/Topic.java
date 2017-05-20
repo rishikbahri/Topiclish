@@ -20,6 +20,13 @@ public class Topic implements Serializable {
 		this.insertDatetime = new Date();
 		this.voteCount = 0;
 	}
+	public Topic(String topicId, String topicName, String topicDesc){
+		this.topicName = topicName;
+		this.topicDesc = topicDesc;
+		this.topicId = topicId;
+		this.insertDatetime = new Date();
+		this.voteCount = 0;
+	}
 
 	public String getTopicId() {
 		return topicId;
