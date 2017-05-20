@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -23,23 +25,28 @@ public class TopiclishDao {
 	// This is used to store the Topic object with topicId as the unique key
 	private HashMap<String,Topic> topicMap;
 	
+	private Logger log = LoggerFactory.getLogger(TopiclishDao.class);
+	
 	public TopiclishDao(){
 		topicVoteIndex = new TreeMap<Integer,LinkedList<String>>(Collections.reverseOrder());
 		topicMap = new HashMap<String,Topic>();
+		log.info("Data Object instantiated");
 	}
 	
 	public void createTopic(Topic topic){
-		topicMap.put(topic.getTopicId(), topic);
+		String topicId = topic.getTopicId();
+		topicMap.put(topicId, topic);
 		LinkedList<String> topicIdList;
 		
 		if(topicVoteIndex.get(0)==null){
 			topicIdList = new LinkedList<String>();
-			topicIdList.push(topic.getTopicId());
+			topicIdList.push(topicId);
 			topicVoteIndex.put(0, topicIdList);
 		}else{
 			topicIdList = topicVoteIndex.get(0);
-			topicIdList.push(topic.getTopicId());
+			topicIdList.push(topicId);
 		}
+		log.debug("New topic with id ["+topicId+"] created");
 	}
 	
 	public void upvoteTopic(String topicId){
@@ -63,6 +70,8 @@ public class TopiclishDao {
 		}else{
 			newVoteCount = currentVoteCount-1;
 		}
+		log.debug("Topic vote topicId=["+topicId+"] currentVoteCount=["+currentVoteCount
+				+ " newVoteCount="+newVoteCount+" isUpvote=["+isUpvote+"]");
 		currentTopic.setVoteCount(newVoteCount);
 		
 		// Re-adjust position of topic in vote bucket to corresponding to its new vote count
