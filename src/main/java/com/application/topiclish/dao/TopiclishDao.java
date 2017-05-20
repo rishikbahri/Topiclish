@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.application.topiclish.dto.Topic;
+import com.application.topiclish.exception.TopiclishCustomException;
 
 // Creating a singleton so that only one instance is there for this class
 @Scope(value = "singleton")
@@ -49,47 +50,51 @@ public class TopiclishDao {
 		log.debug("New topic with id ["+topicId+"] created");
 	}
 	
-	public void upvoteTopic(String topicId){
+	public void upvoteTopic(String topicId) throws TopiclishCustomException{
 		updateTopicVote(topicId,true);
 	}
 	
-	public void downvoteTopic(String topicId){
+	public void downvoteTopic(String topicId) throws TopiclishCustomException{
 		updateTopicVote(topicId,false);
 	}
 	/*
 	   Synchronized method for performing voting operations so as to avoid concurrent 
 	   operations by different threads
 	*/
-	private synchronized void updateTopicVote(String topicId,boolean isUpvote){
+	private synchronized void updateTopicVote(String topicId,boolean isUpvote) throws TopiclishCustomException{
 		// Get the topic from the topic map to update its vote count
 		Topic currentTopic = topicMap.get(topicId);
-		int currentVoteCount = currentTopic.getVoteCount();
-		int newVoteCount;
-		if(isUpvote){
-			newVoteCount = currentVoteCount+1;
+		if(currentTopic!=null){
+			int currentVoteCount = currentTopic.getVoteCount();
+			int newVoteCount;
+			if(isUpvote){
+				newVoteCount = currentVoteCount+1;
+			}else{
+				newVoteCount = currentVoteCount-1;
+			}
+			log.debug("Topic vote topicId=["+topicId+"] currentVoteCount=["+currentVoteCount
+					+ " newVoteCount="+newVoteCount+" isUpvote=["+isUpvote+"]");
+			currentTopic.setVoteCount(newVoteCount);
+			
+			// Re-adjust position of topic in vote bucket to corresponding to its new vote count
+			// Removing the topic form the existing vote bucket
+			LinkedList<String> topicList = topicVoteIndex.get(currentVoteCount);
+			int topicIndex = topicList.indexOf(topicId);
+			topicList.remove(topicIndex);
+			if(topicList.isEmpty()){
+				topicVoteIndex.remove(currentVoteCount);
+			}
+			
+			// Adding topic to the new vote bucket
+			if(topicVoteIndex.containsKey(newVoteCount)){
+				topicVoteIndex.get(newVoteCount).push(topicId);
+			}else{
+				LinkedList<String> newTopicList = new LinkedList<String>();
+				newTopicList.push(topicId);
+				topicVoteIndex.put(newVoteCount, newTopicList);
+			}
 		}else{
-			newVoteCount = currentVoteCount-1;
-		}
-		log.debug("Topic vote topicId=["+topicId+"] currentVoteCount=["+currentVoteCount
-				+ " newVoteCount="+newVoteCount+" isUpvote=["+isUpvote+"]");
-		currentTopic.setVoteCount(newVoteCount);
-		
-		// Re-adjust position of topic in vote bucket to corresponding to its new vote count
-		// Removing the topic form the existing vote bucket
-		LinkedList<String> topicList = topicVoteIndex.get(currentVoteCount);
-		int topicIndex = topicList.indexOf(topicId);
-		topicList.remove(topicIndex);
-		if(topicList.isEmpty()){
-			topicVoteIndex.remove(currentVoteCount);
-		}
-		
-		// Adding topic to the new vote bucket
-		if(topicVoteIndex.containsKey(newVoteCount)){
-			topicVoteIndex.get(newVoteCount).push(topicId);
-		}else{
-			LinkedList<String> newTopicList = new LinkedList<String>();
-			newTopicList.push(topicId);
-			topicVoteIndex.put(newVoteCount, newTopicList);
+			throw new TopiclishCustomException(TopiclishCustomException.topicIDMissing);
 		}
 	}
 	

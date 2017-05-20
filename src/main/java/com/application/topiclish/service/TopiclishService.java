@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.application.topiclish.dao.TopiclishDao;
 import com.application.topiclish.dto.Topic;
+import com.application.topiclish.exception.TopiclishCustomException;
 
 @Service
 public class TopiclishService {
@@ -28,10 +29,10 @@ public class TopiclishService {
 	public List<Topic> getTopTopics(){
 		return dataStructure.getTopNTopics(topTopicsToRetirieve);
 	}
-	public void upvoteTopic(String topicId, String voteCount){
+	public void upvoteTopic(String topicId) throws TopiclishCustomException{
 		dataStructure.upvoteTopic(topicId);
 	}
-	public void downvote(String topicId, String voteCount){
+	public void downvoteTopic(String topicId) throws TopiclishCustomException{
 		dataStructure.downvoteTopic(topicId);
 	}
 }
