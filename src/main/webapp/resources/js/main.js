@@ -24,22 +24,54 @@ function updateCounter(elm, limit, type){
 		$("#"+charCounterId).text("("+countLeft+" charecters remaining)");
 	}
 }
+function makeAjaxCall(type, url, data, successCallback){
+	$.ajax({
+	  type: type,
+	  url: url,
+	  data: data,
+	  success: successCallback
+	});
+}
 var topicManager = {
 	createTopic: function(){
 		if(this.validateTopic()){
 			var $topicName = $("#topicName");
 			var $topicDesc = $("#topicDesc");
-			$.ajax({
-			  type: "POST",
-			  url: "createTopic",
-			  data: {topicName:$topicName.val(),topicDesc:$topicDesc.val()},
-			  success: function(){
-				  $topicDesc.val("");
-				  $topicName.val("");
-				  topicManager.retrieveTopics();
-			  }
+			var postData = {topicName:$topicName.val(),topicDesc:$topicDesc.val()};
+			makeAjaxCall("POST","createTopic",postData, function(){
+				$topicDesc.val("");
+				$topicName.val("");
+				topicManager.retrieveTopics();
 			});
 		}
+	},
+	retrieveTopics: function(){
+		$("#rightContainer").html("Loading...");
+		makeAjaxCall("GET","getTopTopics",{}, function(result){
+			var topicList = result.data;
+			  if(topicList.length==0){
+				  $("#rightContainer").html("There are no topics");
+			  }else{
+				  var str = "";
+				  $("#rightContainer").html("");
+				  for(var i=0;i<topicList.length;i++){
+					  $("#rightContainer").append(topicManager.createTopicDisplay(topicList[i],(i+1)));
+				  }
+				  
+			  }
+		});
+	},
+	upvoteTopic: function(topicId){
+		$("#rightContainer").html("Loading...");
+		makeAjaxCall("PUT","upvoteTopic/"+topicId,{}, function(){
+			topicManager.retrieveTopics();
+		});
+	},
+	downvoteTopic: function(topicId){
+		$("#rightContainer").html("Loading...");
+		makeAjaxCall("PUT","downvoteTopic/"+topicId,{}, function(){
+			topicManager.retrieveTopics();
+		});
 	},
 	validateTopic: function(){
 		var validateTopic = true;
@@ -69,26 +101,6 @@ var topicManager = {
 		}
 		return validateTopic;
 	},
-	retrieveTopics: function(){
-		$("#rightContainer").html("Loading...");
-		$.ajax({
-			  type: "GET",
-			  url: "getTopTopics",
-			  success: function(result){
-				  var topicList = result.data;
-				  if(topicList.length==0){
-					  $("#rightContainer").html("There are no topics");
-				  }else{
-					  var str = "";
-					  $("#rightContainer").html("");
-					  for(var i=0;i<topicList.length;i++){
-						  $("#rightContainer").append(topicManager.createTopicDisplay(topicList[i],(i+1)));
-					  }
-					  
-				  }
-			  }
-			});
-	},
 	createTopicDisplay: function(topic, rank){
 		var $card = $("<div />").addClass("card");
 		var $cardContainer = $("<div />").addClass("cardContainer");
@@ -100,13 +112,13 @@ var topicManager = {
 		
 		var $btnGroup = $("<div />").addClass("btn-group").attr("role","group");
 		
-		var $upvoteButton = $("<button />").addClass("btn btn-primary").attr({"aria-label":"Left Align","topicId":topic.topicId});
+		var $upvoteButton = $("<button />").addClass("btn btn-primary").attr({"aria-label":"Left Align","onclick":"topicManager.upvoteTopic('"+topic.topicId+"')"});
 		var $upvoteButtonIcon = $("<span />").addClass("glyphicon glyphicon-triangle-top").attr("aria-label","Left Align");
 		$upvoteButton.append($upvoteButtonIcon);
 		$upvoteButton.append("Upvote");
 		$btnGroup.append($upvoteButton);
 		
-		var $downvoteButton = $("<button />").addClass("btn btn-default").attr({"aria-label":"Left Align","topicId":topic.topicId});
+		var $downvoteButton = $("<button />").addClass("btn btn-default").attr({"aria-label":"Left Align","onclick":"topicManager.downvoteTopic('"+topic.topicId+"')"});
 		var $downvoteButtonIcon = $("<span />").addClass("glyphicon glyphicon-triangle-bottom").attr("aria-label","Left Align");
 		$downvoteButton.append($downvoteButtonIcon);
 		$downvoteButton.append("Downvote");
