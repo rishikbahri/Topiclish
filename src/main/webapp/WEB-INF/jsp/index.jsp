@@ -9,7 +9,7 @@
 		<script src="<c:url value="/resources/js/jquery-3.2.1.min.js" />"></script>
 		<script src="<c:url value="/resources/js/bootstrap.min.js" />"></script>
 	</head>
-	<body onload="topicManager.displayTopics()">
+	<body onload="topicManager.retrieveTopics()">
 		<div id="container">
 			<div id="leftContainer">
 				<p id="title">Topiclish</p>
