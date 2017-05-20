@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import com.anarsoft.vmlens.concurrent.junit.ConcurrentTestRunner;
 import com.application.topiclish.dao.TopiclishDao;
 import com.application.topiclish.dto.Topic;
+import com.application.topiclish.exception.TopiclishCustomException;
 
 // Runs test case in 4 parallel threads
 @RunWith(ConcurrentTestRunner.class)
@@ -30,7 +31,7 @@ public class TopiclishDaoMultiThreadTest {
 	}
 	
 	@Test
-    public void testVoting() {
+    public void testVoting() throws TopiclishCustomException {
 		topiclishDao.upvoteTopic("50");
 		topiclishDao.upvoteTopic("40");
 		topiclishDao.upvoteTopic("40");

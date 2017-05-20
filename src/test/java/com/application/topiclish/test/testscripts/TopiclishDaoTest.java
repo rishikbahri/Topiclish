@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import com.application.topiclish.dao.TopiclishDao;
 import com.application.topiclish.dto.Topic;
+import com.application.topiclish.exception.TopiclishCustomException;
 
 public class TopiclishDaoTest {
 
@@ -39,7 +40,7 @@ public class TopiclishDaoTest {
     }
 	
 	@Test
-    public void testVoting() {
+    public void testVoting() throws TopiclishCustomException {
 		List<Topic> topicList = createTopicList(100);
 		
 		Topic topic = topicList.get(50);
