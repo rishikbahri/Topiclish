@@ -19,6 +19,7 @@ import com.application.topiclish.dto.BaseJsonResponse;
 import com.application.topiclish.dto.Topic;
 import com.application.topiclish.exception.TopiclishCustomException;
 import com.application.topiclish.service.TopiclishService;
+import com.application.topiclish.util.TopiclishProperties;
 import com.application.topiclish.util.TopiclishUtil;
 
 @Controller("/")
@@ -30,11 +31,16 @@ public class TopiclishController {
 	@Autowired
 	private TopiclishUtil topiclishUtil;
 	
+	@Autowired
+	private TopiclishProperties props;
+	
 	private Logger log = LoggerFactory.getLogger(TopiclishController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
 		ModelAndView view = new ModelAndView("index");
+		view.addObject("supportedNameLen", props.getSupportedTopicNameLength());
+		view.addObject("supportedDescLen", props.getSupportedTopicDescLength());
 		return view;
 	}
 	@RequestMapping(value = "/getTopTopics", method = RequestMethod.GET)
@@ -48,8 +54,17 @@ public class TopiclishController {
 		String topicName = request.getParameter("topicName");	
 		String topicDesc = request.getParameter("topicDesc");
 		log.debug("topicName=["+topicName+"] topicDesc=["+topicDesc+"]");
-		topiclishService.createTopic(topicName, topicDesc);
-		return topiclishUtil.constructSucessfulResponse(null);
+		BaseJsonResponse resp;
+		
+		try {
+			topiclishService.createTopic(topicName, topicDesc);
+			resp = topiclishUtil.constructSucessfulResponse(null);
+		} catch (TopiclishCustomException e) {
+			log.error(e.getMessage(),e);
+			resp = topiclishUtil.constructErrorResponse(e.getMessage());
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		}
+		return resp;
 	}
 	@RequestMapping(value = "/upvoteTopic/{topicId}", method = RequestMethod.PUT)
 	public @ResponseBody BaseJsonResponse upvoteTopic(@PathVariable String topicId,
@@ -60,7 +75,7 @@ public class TopiclishController {
 			topiclishService.upvoteTopic(topicId);
 			resp = topiclishUtil.constructSucessfulResponse(null);
 		} catch (TopiclishCustomException e) {
-			log.error("Custom Exception",e);
+			log.error(e.getMessage(),e);
 			resp = topiclishUtil.constructErrorResponse(e.getMessage());
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}
@@ -75,7 +90,7 @@ public class TopiclishController {
 			topiclishService.downvoteTopic(topicId);
 			resp = topiclishUtil.constructSucessfulResponse(null);
 		} catch (TopiclishCustomException e) {
-			log.error("Custom Exception",e);
+			log.error(e.getMessage(),e);
 			resp = topiclishUtil.constructErrorResponse(e.getMessage());
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 		}

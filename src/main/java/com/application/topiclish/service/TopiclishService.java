@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import com.application.topiclish.dao.TopiclishDao;
 import com.application.topiclish.dto.Topic;
 import com.application.topiclish.exception.TopiclishCustomException;
+import com.application.topiclish.util.TopiclishProperties;
+import com.application.topiclish.util.TopiclishUtil;
 
 @Service
 public class TopiclishService {
@@ -17,17 +19,21 @@ public class TopiclishService {
 	@Autowired
 	private TopiclishDao dataStructure;
 	
+	@Autowired
+	private TopiclishUtil topiclishUtil;
+	
+	@Autowired
+	private TopiclishProperties props;
+	
 	private Logger log = LoggerFactory.getLogger(TopiclishService.class);
 	
-	// Number of topics to be displayed
-	private final int topTopicsToRetirieve = 20;
-	
-	public void createTopic(String topicName, String topicDesc){
+	public void createTopic(String topicName, String topicDesc) throws TopiclishCustomException{
+		topiclishUtil.validateInput(topicName, topicDesc);
 		Topic topic = new Topic(topicName,topicDesc);
 		dataStructure.createTopic(topic);
 	}
 	public List<Topic> getTopTopics(){
-		return dataStructure.getTopNTopics(topTopicsToRetirieve);
+		return dataStructure.getTopNTopics(props.getTopTopicsToRetirieve());
 	}
 	public void upvoteTopic(String topicId) throws TopiclishCustomException{
 		dataStructure.upvoteTopic(topicId);
