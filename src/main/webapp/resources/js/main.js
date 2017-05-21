@@ -1,5 +1,5 @@
 var inputValidator = {
-	createInputListners: function(topicNameCount, topicDescCount){
+	createInputListners: function(topicDescCount){
 		$( "#topicDesc" ).keyup(function() {
 			inputValidator.updateCounter(this,topicDescCount,"text");
 		});
