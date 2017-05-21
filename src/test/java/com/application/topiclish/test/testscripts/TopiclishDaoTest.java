@@ -82,7 +82,7 @@ public class TopiclishDaoTest {
 	private List<Topic> createTopicList(int count){
 		List<Topic> topicList = new ArrayList<Topic>();
 		for(int i=0;i<count;i++){
-			topicList.add(new Topic(String.valueOf(i),"Topic "+i,"This is Topic "+i));
+			topicList.add(new Topic(String.valueOf(i),"This is Topic "+i));
 		}
 		return topicList;
 	}

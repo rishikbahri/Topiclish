@@ -6,18 +6,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class TopiclishProperties {
 	
-	@Value("${supportedTopicNameLength}")
-	private int supportedTopicNameLength;
-	
 	@Value("${supportedTopicDescLength}")
 	private int supportedTopicDescLength;
 	
 	@Value("${topTopicsToRetirieve}")
 	private int topTopicsToRetirieve;
-
-	public int getSupportedTopicNameLength() {
-		return supportedTopicNameLength;
-	}
 
 	public int getSupportedTopicDescLength() {
 		return supportedTopicDescLength;

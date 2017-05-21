@@ -27,9 +27,9 @@ public class TopiclishService {
 	
 	private Logger log = LoggerFactory.getLogger(TopiclishService.class);
 	
-	public void createTopic(String topicName, String topicDesc) throws TopiclishCustomException{
-		topiclishUtil.validateInput(topicName, topicDesc);
-		Topic topic = new Topic(topicName,topicDesc);
+	public void createTopic(String topicDesc) throws TopiclishCustomException{
+		topiclishUtil.validateInput(topicDesc);
+		Topic topic = new Topic(topicDesc);
 		dataStructure.createTopic(topic);
 	}
 	public List<Topic> getTopTopics(){

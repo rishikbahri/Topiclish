@@ -8,20 +8,17 @@ public class Topic implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String topicId;
-	private String topicName;
 	private String topicDesc;
 	private Date insertDatetime;
 	private int voteCount;
 	
-	public Topic(String topicName, String topicDesc){
-		this.topicName = topicName;
+	public Topic(String topicDesc){
 		this.topicDesc = topicDesc;
 		this.topicId = UUID.randomUUID().toString();
 		this.insertDatetime = new Date();
 		this.voteCount = 0;
 	}
-	public Topic(String topicId, String topicName, String topicDesc){
-		this.topicName = topicName;
+	public Topic(String topicId, String topicDesc){
 		this.topicDesc = topicDesc;
 		this.topicId = topicId;
 		this.insertDatetime = new Date();
@@ -30,12 +27,6 @@ public class Topic implements Serializable {
 
 	public String getTopicId() {
 		return topicId;
-	}
-	public String getTopicName() {
-		return topicName;
-	}
-	public void setTopicName(String topicName) {
-		this.topicName = topicName;
 	}
 	public String getTopicDesc() {
 		return topicDesc;
@@ -54,7 +45,7 @@ public class Topic implements Serializable {
 	}
 	@Override
 	public String toString() {
-		return "Topic [topicId=" + topicId + ", topicName=" + topicName + ", topicDesc=" + topicDesc
+		return "Topic [topicId=" + topicId + ", topicDesc=" + topicDesc
 				+ ", insertDatetime=" + insertDatetime + ", voteCount=" + voteCount + "]";
 	}
 	@Override

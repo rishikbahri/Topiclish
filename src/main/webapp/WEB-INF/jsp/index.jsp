@@ -15,13 +15,8 @@
 				<p id="title">Topiclish</p>
 				<div>
 					<h3>Create Topic</h3>
-  					<div class="form-group" id="nameGroup">
-  						<p class="formLabel">Name <span id="nameCharCounter"></span></p> 
-  						<label class="control-label" for="topicName"><small id="nameError"></small></label>
-    					<input type="text" class="form-control" id="topicName" placeholder="Name" maxlength="${supportedNameLen}">
-    				</div>
     				<div class="form-group" id="textGroup">
-    					<p class="formLabel">Text <span id="textCharCounter"></span></p> 
+    					<p class="formLabel">Topic Text <span id="textCharCounter"></span></p> 
     					<label class="control-label" for="topicName"><small id="textError"></small></label>
     					<textarea class="form-control" id="topicDesc" placeholder="Text" rows="3" maxlength="${supportedDescLen}"></textarea>
     					 <br/>
@@ -36,7 +31,7 @@
 		<script src="<c:url value="/resources/js/main.js" />"></script>
 		<script>
 			$(document).ready(function() { 
-				inputValidator.createInputListners("${supportedNameLen}","${supportedDescLen}")
+				inputValidator.createInputListners("${supportedDescLen}")
 				topicManager.retrieveTopics();
 			});
 

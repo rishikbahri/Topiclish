@@ -37,23 +37,14 @@ public class TopiclishUtil {
 		resp.setStatus(status);
 		return resp;
 	}
-	public void validateInput(String topicName, String topicDesc) throws TopiclishCustomException{
-		int supportedNameLen = props.getSupportedTopicNameLength();
+	public void validateInput(String topicDesc) throws TopiclishCustomException{
 		int supportedDescLen = props.getSupportedTopicDescLength();
-		if(topicName==null){
-			log.error("Topic Name is null");
-			throw new TopiclishCustomException(TopiclishCustomException.missingData);
-		}else if(topicName.length()>supportedNameLen){
-			log.error("Topic Name length is more than supported size supported"
-					+ " size=["+supportedNameLen+"] actual=["+topicName.length()+"]");
-			throw new TopiclishCustomException(TopiclishCustomException.missingData);
-		}
 		if(topicDesc==null){
 			log.error("Topic Desc is null");
 			throw new TopiclishCustomException(TopiclishCustomException.missingData);
 		}else if(topicDesc.length()>supportedDescLen){
 			log.error("Topic Desc length is more than supported size supported"
-					+ " size=["+supportedDescLen+"] actual=["+topicName.length()+"]");
+					+ " size=["+supportedDescLen+"] actual=["+topicDesc.length()+"]");
 			throw new TopiclishCustomException(TopiclishCustomException.missingData);
 		}
 	}

@@ -39,7 +39,6 @@ public class TopiclishController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
 		ModelAndView view = new ModelAndView("index");
-		view.addObject("supportedNameLen", props.getSupportedTopicNameLength());
 		view.addObject("supportedDescLen", props.getSupportedTopicDescLength());
 		return view;
 	}
@@ -51,13 +50,12 @@ public class TopiclishController {
 	
 	@RequestMapping(value = "/createTopic", method = RequestMethod.POST)
 	public @ResponseBody BaseJsonResponse createTopic(HttpServletRequest request, HttpServletResponse response){
-		String topicName = request.getParameter("topicName");	
 		String topicDesc = request.getParameter("topicDesc");
-		log.debug("topicName=["+topicName+"] topicDesc=["+topicDesc+"]");
+		log.debug("topicDesc=["+topicDesc+"]");
 		BaseJsonResponse resp;
 		
 		try {
-			topiclishService.createTopic(topicName, topicDesc);
+			topiclishService.createTopic(topicDesc);
 			resp = topiclishUtil.constructSucessfulResponse(null);
 		} catch (TopiclishCustomException e) {
 			log.error(e.getMessage(),e);
