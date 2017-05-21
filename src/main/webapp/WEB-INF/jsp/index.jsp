@@ -25,7 +25,7 @@
     					<label class="control-label" for="topicName"><small id="textError"></small></label>
     					<textarea class="form-control" id="topicDesc" placeholder="Text" rows="3" maxlength="${supportedDescLen}"></textarea>
     					 <br/>
-    					 <button type="submit" class="btn btn-primary" onclick="topicManager.createTopic()">Create</button>	
+    					 <button type="submit" id="submitBttn" class="btn btn-primary" onclick="topicManager.createTopic()">Create</button>	
 					</div>
 				</div>
 			</div>

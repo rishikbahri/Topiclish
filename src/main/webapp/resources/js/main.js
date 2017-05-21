@@ -54,7 +54,7 @@ var inputValidator = {
 			validateTopic = false;
 		}
 		return validateTopic;
-	}	
+	}
 }
 function makeAjaxCall(type, url, data, successCallback, errorCallback){
 	$.ajax({
@@ -68,6 +68,7 @@ function makeAjaxCall(type, url, data, successCallback, errorCallback){
 
 var topicManager = {
 	createTopic: function(){
+		$("#submitBttn").attr("disabled","disabled");
 		if(inputValidator.validateTopic()){
 			var $topicName = $("#topicName");
 			var $topicDesc = $("#topicDesc");
@@ -75,9 +76,12 @@ var topicManager = {
 			makeAjaxCall("POST","createTopic",postData, function(){
 				$topicDesc.val("");
 				$topicName.val("");
+				$("#textCharCounter").text("");
+				$("#submitBttn").removeAttr("disabled");
 				topicManager.retrieveTopics();
 			},
 			function(){
+				$("#submitBttn").removeAttr("disabled");
 				alert("An unexpected error has occured while creating the topic");
 			});
 		}
