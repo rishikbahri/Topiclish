@@ -1,6 +1,6 @@
 # Topiclish
 
-This code maintains a list of topics sorted by vote counts in descending order.
+This code maintains a list of topics sorted by vote counts in descending order.[Click here for a live demo](https://topiclish.herokuapp.com/)
 
 ## Technology Stack
 This is built on java with Spring MVC framework for the backend and JQuery & Bootstrap for the frontend.
