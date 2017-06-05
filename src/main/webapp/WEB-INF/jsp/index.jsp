@@ -9,7 +9,7 @@
 		<link rel="stylesheet" href="<c:url value="/resources/css/main.css" />"/>
 	</head>
 	<body>
-		<div id="react"></div>
+		<div id="react" supportedDescLen="${supportedDescLen}"></div>
 	
 		<script src="<c:url value="/resources/built/bundle.js" />"></script>
 		

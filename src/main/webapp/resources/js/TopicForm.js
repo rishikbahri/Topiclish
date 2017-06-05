@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class TopicForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {value: '', hasError: false, maxLength: 10, isEnterSubmit: false};
+    this.state = {value: '', hasError: false, maxLength: document.getElementById("react").getAttribute("supportedDescLen"), isEnterSubmit: false};
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
