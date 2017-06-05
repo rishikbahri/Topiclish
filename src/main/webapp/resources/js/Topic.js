@@ -8,7 +8,7 @@ class Topic extends Component {
     return (
       <div className="topic">
         <div className="topicContainer">
-          <TopicVotingControl topicId={this.props.topicId} handleTopicUpvote={this.props.handleTopicUpvote} handleTopicDownvote={this.props.handleTopicDownvote} voteCount={this.props.voteCount}/>
+          <TopicVotingControl topicId={this.props.topicId} topicNum={this.props.topicNum} handleTopicUpvote={this.props.handleTopicUpvote} handleTopicDownvote={this.props.handleTopicDownvote} voteCount={this.props.voteCount}/>
           <TopicContent topicDesc={this.props.topicDesc} insertDatetime={this.props.insertDatetime} />
         </div>
       </div>

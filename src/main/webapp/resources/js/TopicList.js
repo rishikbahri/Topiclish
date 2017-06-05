@@ -45,10 +45,13 @@ class TopicList extends Component {
     });
   }
   render() {
+	var topicNum = 0;
     return (
       <div id="rightContainer">
-      {this.state.topics.length ? this.state.topics.map(topic =>
-      <Topic key={topic.topicId} topicId={topic.topicId} handleTopicUpvote={this.handleTopicUpvote} handleTopicDownvote={this.handleTopicDownvote} topicDesc={topic.topicDesc} insertDatetime={topic.insertDatetime} voteCount={topic.voteCount} />
+      {this.state.topics.length ? this.state.topics.map(topic =>{
+    	  topicNum++;
+      
+      return (<Topic key={topic.topicId} topicNum={topicNum} topicId={topic.topicId} handleTopicUpvote={this.handleTopicUpvote} handleTopicDownvote={this.handleTopicDownvote} topicDesc={topic.topicDesc} insertDatetime={topic.insertDatetime} voteCount={topic.voteCount} />);}
     ) : 'There are no topics' }
       </div>
     );

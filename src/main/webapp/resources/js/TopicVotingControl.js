@@ -4,7 +4,7 @@ class TopicVotingControl extends Component {
   render() {
     return (
       <div className="voteButtonGroup">
-        <p className="voteCount">{this.props.voteCount} Votes</p>
+        <p className="voteCount">#{this.props.topicNum} ({this.props.voteCount} Votes)</p>
         <div className="btn-group" role="group">
           <button className="btn btn-primary" aria-label="Left Align" onClick={() => this.props.handleTopicUpvote(this.props.topicId)}>
             <span className="glyphicon glyphicon-triangle-top" aria-label="Left Align"></span>Upvote
