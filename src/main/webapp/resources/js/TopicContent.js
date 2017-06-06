@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class TopicContent extends Component {
   render() {
     var topicDate = new Date(this.props.insertDatetime);
-		var formattedDate = "Created on "+topicDate.getDate()+"/"+topicDate.getMonth()+"/"+topicDate.getFullYear()
+		var formattedDate = topicDate.getDate()+"/"+topicDate.getMonth()+"/"+topicDate.getFullYear()
 							+" "+topicDate.getHours() + ":"
 							+ topicDate.getMinutes() + ":" + topicDate.getSeconds();
     return (
